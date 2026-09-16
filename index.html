@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wei Yu-Chieh | Personal Dashboard & Live Clock</title>
+  <meta name="description" content="Personal profile and real-time precision clock dashboard built with Tailwind CSS v3 and modern UI/UX design.">
+  
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Compiled Tailwind CSS -->
+  <link rel="stylesheet" href="./dist/output.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#0b0f19] text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
+
+  <!-- Ambient Glow Gradients (Background) -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div id="orb-1" class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/25 rounded-full blur-3xl animate-float"></div>
+    <div id="orb-2" class="absolute top-1/3 -right-24 w-[28rem] h-[28rem] bg-violet-600/20 rounded-full blur-3xl animate-float-reverse"></div>
+    <div id="orb-3" class="absolute -bottom-24 left-1/4 w-[32rem] h-[32rem] bg-blue-600/15 rounded-full blur-3xl animate-pulse-slow"></div>
+    <!-- Subtle Grid Overlay -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f293d08_1px,transparent_1px),linear-gradient(to_bottom,#1f293d08_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="relative z-10 w-full max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+    <!-- Brand / Status -->
+    <div class="flex items-center gap-3">
+      <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white font-bold shadow-lg shadow-indigo-500/20">
+        <span id="nav-initials">WY</span>
+        <span class="absolute -top-1 -right-1 flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+        </span>
+      </div>
+      <div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          Personal Portal
+        </div>
+        <div class="text-sm font-medium text-slate-200">IoT & Data Analysis</div>
+      </div>
+    </div>
+
+    <!-- Quick Controls -->
+    <div class="flex items-center gap-2.5">
+      <!-- 12h / 24h Toggle Button -->
+      <button id="format-toggle" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-card glass-card-hover text-xs font-mono font-medium text-slate-300 hover:text-white transition-all cursor-pointer" title="Toggle 12h / 24h format">
+        <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i>
+        <span id="format-badge">24H</span>
+      </button>
+
+      <!-- Theme Color Selector Dropdown/Button -->
+      <div class="relative">
+        <button id="theme-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-card glass-card-hover text-xs font-medium text-slate-300 hover:text-white transition-all cursor-pointer" title="Switch accent vibe">
+          <i data-lucide="palette" class="w-3.5 h-3.5 text-violet-400"></i>
+          <span class="hidden sm:inline">Theme</span>
+        </button>
+        <div id="theme-dropdown" class="hidden absolute right-0 mt-2 w-36 py-2 glass-card rounded-xl shadow-xl z-50 border border-slate-700/50">
+          <button class="theme-opt w-full px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800/60 flex items-center gap-2" data-theme="violet">
+            <span class="w-2.5 h-2.5 rounded-full bg-violet-500"></span> Aurora Violet
+          </button>
+          <button class="theme-opt w-full px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800/60 flex items-center gap-2" data-theme="cyan">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Cyber Cyan
+          </button>
+          <button class="theme-opt w-full px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800/60 flex items-center gap-2" data-theme="emerald">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Emerald Neon
+          </button>
+          <button class="theme-opt w-full px-3 py-1.5 text-left text-xs text-slate-200 hover:bg-slate-800/60 flex items-center gap-2" data-theme="amber">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Solar Amber
+          </button>
+        </div>
+      </div>
+
+      <!-- Fullscreen Toggle -->
+      <button id="fullscreen-toggle" class="p-2 rounded-lg glass-card glass-card-hover text-slate-300 hover:text-white transition-all cursor-pointer" title="Toggle Fullscreen">
+        <i data-lucide="maximize" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="relative z-10 w-full max-w-5xl mx-auto px-6 py-4 sm:py-8 flex flex-col gap-6">
+
+    <!-- Hero Card: Profile & Greeting -->
+    <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden transition-all duration-300 hover:border-indigo-500/30 shadow-glass">
+      <!-- Glow Accent Behind Header -->
+      <div class="absolute -right-16 -top-16 w-56 h-56 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <!-- Avatar Icon -->
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/25 flex-shrink-0">
+            <div class="w-full h-full bg-slate-900 rounded-[14px] flex items-center justify-center overflow-hidden">
+              <span id="avatar-initials" class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-300 via-purple-200 to-pink-300 bg-clip-text text-transparent">WY</span>
+            </div>
+          </div>
+
+          <!-- Name & Greeting -->
+          <div>
+            <div class="flex items-center gap-2 text-xs sm:text-sm font-medium text-indigo-400 tracking-wide">
+              <span id="greeting-icon-container"><i data-lucide="sparkles" class="w-4 h-4"></i></span>
+              <span id="time-greeting">Good evening</span>, Welcome back
+            </div>
+
+            <!-- Editable Name Display -->
+            <div class="group flex items-center gap-3 mt-1">
+              <h1 id="user-name" class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                Wei Yu-Chieh
+              </h1>
+              <button id="edit-name-btn" class="opacity-70 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 transition-all cursor-pointer" title="Edit your name">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Ready to innovate in IoT applications and data engineering.</p>
+          </div>
+        </div>
+
+        <!-- Live Status Pill -->
+        <div class="flex flex-wrap sm:flex-col items-end gap-2">
+          <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Real-Time Connected
+          </div>
+          <div id="local-timezone-badge" class="px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700/50 text-slate-400 text-xs font-mono">
+            Asia/Taipei
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Live Clock Section -->
+    <div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden text-center transition-all duration-300 hover:border-indigo-500/40 shadow-glass">
+      
+      <!-- Top Subtitle -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-mono uppercase tracking-wider mb-4">
+        <i data-lucide="activity" class="w-3.5 h-3.5 text-indigo-400 animate-pulse"></i>
+        <span>Live System Time</span>
+      </div>
+
+      <!-- Main Glowing Digital Time Display -->
+      <div class="my-4 flex items-baseline justify-center font-mono select-none tracking-tight">
+        <div class="flex items-baseline font-bold text-5xl sm:text-7xl md:text-8xl text-white drop-shadow-2xl">
+          <!-- Hours -->
+          <span id="clock-hours" class="tabular-nums font-bold">00</span>
+          <!-- Pulsing Separator -->
+          <span id="clock-separator-1" class="text-indigo-400 mx-1 sm:mx-2 transition-opacity duration-300 font-light">:</span>
+          <!-- Minutes -->
+          <span id="clock-minutes" class="tabular-nums font-bold">00</span>
+          <!-- Pulsing Separator -->
+          <span id="clock-separator-2" class="text-indigo-400 mx-1 sm:mx-2 transition-opacity duration-300 font-light">:</span>
+          <!-- Seconds -->
+          <span id="clock-seconds" class="tabular-nums text-indigo-300 font-semibold text-4xl sm:text-6xl md:text-7xl">00</span>
+        </div>
+
+        <!-- AM/PM Indicator -->
+        <div id="clock-ampm" class="ml-3 text-lg sm:text-2xl font-semibold text-slate-400 self-end mb-2 sm:mb-4">
+          PM
+        </div>
+      </div>
+
+      <!-- Minute Progress Bar -->
+      <div class="max-w-md mx-auto mt-6">
+        <div class="flex justify-between text-xs font-mono text-slate-400 mb-1.5">
+          <span>Current Minute</span>
+          <span id="second-progress-text">0s / 60s</span>
+        </div>
+        <div class="w-full h-1.5 bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/30">
+          <div id="second-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- Secondary Info Tags -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm text-slate-300 font-medium">
+        <button id="copy-time-btn" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 text-xs font-mono transition-all cursor-pointer active:scale-95" title="Copy ISO Timestamp">
+          <i data-lucide="copy" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span id="copy-btn-label">Copy Timestamp</span>
+        </button>
+
+        <div class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-800/60 border border-slate-700/50 text-xs font-mono text-slate-300">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span id="offset-badge">UTC +08:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Widgets Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Date Widget -->
+      <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs uppercase font-mono tracking-wider text-slate-400">Calendar</span>
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <div>
+          <div id="widget-weekday" class="text-xl font-bold text-white">Wednesday</div>
+          <div id="widget-fulldate" class="text-sm text-slate-300 mt-0.5">September 16, 2026</div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400 font-mono">
+          <span>Week number</span>
+          <span id="widget-weeknum" class="text-indigo-300 font-semibold">W38</span>
+        </div>
+      </div>
+
+      <!-- Timezone & Epoch Widget -->
+      <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs uppercase font-mono tracking-wider text-slate-400">Unix Epoch</span>
+          <div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400">
+            <i data-lucide="cpu" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <div>
+          <div id="widget-epoch" class="text-xl font-mono font-bold text-white tracking-wide">1789560755</div>
+          <div class="text-xs text-slate-400 mt-1 font-mono">Seconds since 1970 UTC</div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400 font-mono">
+          <span>Day of Year</span>
+          <span id="widget-dayofyear" class="text-violet-300 font-semibold">Day 259</span>
+        </div>
+      </div>
+
+      <!-- Solar & Daylight Widget -->
+      <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-xs uppercase font-mono tracking-wider text-slate-400">Day Period</span>
+          <div id="widget-period-icon" class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400">
+            <i data-lucide="moon" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <div>
+          <div id="widget-period-name" class="text-xl font-bold text-white">Night Phase</div>
+          <div id="widget-period-quote" class="text-xs text-slate-300 mt-1 italic">"The quiet hours spark the best code."</div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400 font-mono">
+          <span>Target Mode</span>
+          <span class="text-amber-300 font-semibold">Focus & Create</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Edit Name Modal -->
+  <div id="name-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
+    <div class="glass-card rounded-2xl max-w-md w-full p-6 border border-slate-700 shadow-2xl relative">
+      <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+        <i data-lucide="user-check" class="w-5 h-5 text-indigo-400"></i>
+        Customize Display Name
+      </h3>
+      <p class="text-xs text-slate-400 mb-4">Set your preferred name or handle to show on this personal dashboard.</p>
+      
+      <div class="mb-4">
+        <label for="name-input" class="block text-xs font-medium text-slate-300 mb-1.5">Your Name</label>
+        <input type="text" id="name-input" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-medium text-sm transition-all" placeholder="Enter your name" maxlength="30">
+      </div>
+
+      <div class="flex items-center justify-end gap-2.5">
+        <button id="cancel-name-btn" class="px-4 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all cursor-pointer">
+          Cancel
+        </button>
+        <button id="save-name-btn" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/30 cursor-pointer">
+          Save Name
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/90 border border-indigo-500/30 text-white text-xs font-medium shadow-xl opacity-0 translate-y-4 pointer-events-none transition-all duration-300">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toast-message">Copied to clipboard!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="relative z-10 w-full max-w-5xl mx-auto px-6 py-6 mt-6 border-t border-slate-800/50 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+    <div>
+      Designed with <span class="text-rose-400">♥</span> using Tailwind CSS v3 & Modern Web Standards
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="hover:text-slate-300 transition-colors">IoT & Data Analysis (L02)</span>
+      <span>•</span>
+      <span id="client-resolution">1920 × 1080</span>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="./script.js"></script>
+</body>
+</html>
