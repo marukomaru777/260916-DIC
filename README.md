@@ -7,7 +7,8 @@
 
 An elegant, modern personal landing page and live precision clock dashboard designed with **Tailwind CSS v3**, **Lucide Icons**, and modern glassmorphism aesthetics.
 
-🔗 **線上展示網址 (Live URL)**: [https://marukomaru777.github.io/260916-DIC/](https://marukomaru777.github.io/260916-DIC/)
+🔗 **線上展示網址 (Live URL)**: [https://marukomaru777.github.io/260916-DIC/](https://marukomaru777.github.io/260916-DIC/)  
+📦 **GitHub 專案原始碼 (Repository)**: [https://github.com/marukomaru777/260916-DIC](https://github.com/marukomaru777/260916-DIC)
 
 ---
 
