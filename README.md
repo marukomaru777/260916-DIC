@@ -11,6 +11,12 @@ An elegant, modern personal landing page and live precision clock dashboard desi
 
 ---
 
+<p align="center">
+  <img src="./assets/preview.png" alt="Personal Dashboard & Real-Time Clock Preview" width="850">
+</p>
+
+---
+
 ## ✨ 核心特色 (Key Features)
 
 ### 1. 👤 個人身分與動態問候 (Identity & Dynamic Greetings)
@@ -55,6 +61,8 @@ An elegant, modern personal landing page and live precision clock dashboard desi
 ## 📁 目錄結構 (Project Structure)
 
 ```text
+├── assets/
+│   └── preview.png      # 儀表板預覽截圖
 ├── index.html           # 主要網頁入口結構（語意化 HTML5 與組件標記）
 ├── script.js            # 即時時鐘運算、格式切換、問候語與互動邏輯
 ├── src/
